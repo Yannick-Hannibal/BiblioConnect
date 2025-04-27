@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello GestionCatalogueAdminController!{% endblock %}
+
+{% block body %}
+
+<section class="mt-32">
+    <div>
+        <p>{{ ouvrages.title }}</p>
+        <p>{{ ouvrages.description }}</p>
+        <p>{{ author.name }}</p>
+        <p>{{ category.name }}</p>
+        <p>{{ language.name }}</p>
+
+        <a href="{{ path('app_gestion_catalogue_admin_edit', { 'slug': ouvrages.slug }) }}">Edit</a>
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ label }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endfor %}
+    </div>
+</section>
+
+{% endblock %}

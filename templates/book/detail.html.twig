@@ -1,0 +1,74 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ ouvrages.title }}{% endblock %}
+
+{% block body %}
+    <section class="mt-32">
+        <p>{{ ouvrages.title }}</p>
+        <p>{{ ouvrages.description }}</p>
+        <p>{{ author.name }}</p>
+        <p>{{ category.name }}</p>
+        <p>{{ language.name }}</p>
+        {% if ouvrages.stock > 0 %}
+            <form method="post" action="{{ path('app_reservation', {'slug': ouvrages.slug}) }}">
+                <div>
+                    <label for="quantity">Quantité :</label>
+                    <input type="number" id="quantity" name="quantity" min="1" max="{{ ouvrages.stock }}" value="1" required>
+                </div>
+
+                <div>
+                    <button type="submit">Réserver</button>
+                </div>
+            </form>
+        {% else %}
+            <p>Ce livre est actuellement en rupture de stock.</p>
+        {% endif %}
+
+        <h1>Commenter "{{ ouvrages.title }}"</h1>
+
+       {{ form_start(form, { 'action': path('app_book_view', { 'slug': ouvrages.slug }) }) }}
+            {{ form_row(form.content) }}
+            <div class="rating-container">
+                <div class="form-group">
+                    {% for choice in form.rating %}
+                        <label class="star-label">
+                            {{ form_widget(choice) }}
+                            <span class="star">★</span>
+                        </label>
+                    {% endfor %}
+                </div>
+            </div>
+            <button class="btn btn-primary" type="submit">Envoyer</button>
+        {{ form_end(form) }}
+
+
+
+        {% for comment in comments %}
+            <div class="comment">
+                <strong>{{ comment.user.email }}</strong> ({{ comment.rating }}/5)
+                <p>{{ comment.content }}</p>
+                 <p>
+                    Note : 
+                    {% for i in 1..5 %}
+                        {% if i <= comment.rating %}
+                            ⭐
+                        {% else %}
+                            ☆
+                        {% endif %}
+                    {% endfor %}
+                </p>
+                <small>Posté le {{ comment.createdAt|date('d/m/Y') }}</small>
+            </div>
+        {% else %}
+            <p>Aucun commentaire pour ce livre.</p>
+        {% endfor %}
+
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ label }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endfor %}
+    </section>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello GestionCatalogueAdminController!{% endblock %}
+
+{% block body %}
+
+<section class="mt-32">
+    <div>
+        <h1>Modifier le livre</h1>
+        <p>Ouvrage : {{ Book.title }}</p>
+        <p>User Email : {{ User.email }}</p>
+        {{ form_start(form) }}
+            {{ form_widget(form) }}
+            <button class="btn btn-primary">Mettre à jour</button>
+        {{ form_end(form) }}
+        <form method="post" action="{{ path('app_gestion_catalogue_admin_deletereservation', { 'id': reservation.id}) }}" onSubmit="return confirm('es tu sur de vouloir supprimer cet item ?');">
+            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ reservation.id ) }}">
+            <button class="btn btn-danger">Supprimer</button>
+        </form>
+    </div>
+</section>
+
+{% endblock %}
