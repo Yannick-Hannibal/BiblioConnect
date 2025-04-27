@@ -305,7 +305,7 @@ final class GestionCatalogueAdminController extends AbstractController
 
             $this->addFlash('success', 'Utilisateur modifié avec succès.');
 
-            return $this->redirectToRoute('admin_user_edit');
+            return $this->redirectToRoute('admin_users');
         }
 
         return $this->render('gestion_catalogue_admin/users/edit.html.twig', [

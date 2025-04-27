@@ -27,6 +27,7 @@
             <p class="text-sm text-gray-600 dark:text-gray-400">Langue : {{ ouvrages.language.name }}</p>
         </div>
 
+
         {% if ouvrages.stock > 0 %}
             <form method="post" action="{{ path('app_reservation', {'slug': ouvrages.slug}) }}" class="space-y-6">
                 <div>
@@ -49,6 +50,35 @@
     <h2 class="text-xl font-semibold mb-4 mt-8 text-gray-900 dark:text-white">
         Commenter "{{ ouvrages.title }}"
     </h2>
+
+        {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_LIBRARIAN') or is_granted('ROLE_USER') %}
+            <h1 class="text-xl font-semibold mb-4 mt-8">Commenter "{{ ouvrages.title }}"</h1>
+
+            {{ form_start(form, { 'action': path('app_book_view', { 'slug': ouvrages.slug }) }) }}
+                <div class="mb-4">
+                    {{ form_label(form.content, null, {'attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
+                    {{ form_widget(form.content, {'attr': {'class': 'mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500'}}) }}
+                    {{ form_errors(form.content) }}
+                </div>
+
+                <div class="rating-container mb-4">
+                    <div class="form-group">
+                        <p class="text-sm font-medium text-gray-700">Note :</p>
+                        {% for choice in form.rating %}
+                            <label class="star-label inline-block">
+                                {{ form_widget(choice) }}
+                                <span class="star text-yellow-500">★</span>
+                            </label>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <button class="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500" type="submit">
+                    Envoyer
+                </button>
+            {{ form_end(form) }}
+        {% endif %}
+
 
     {{ form_start(form, { 'action': path('app_book_view', { 'slug': ouvrages.slug }) }) }}
         <div class="mb-4">
