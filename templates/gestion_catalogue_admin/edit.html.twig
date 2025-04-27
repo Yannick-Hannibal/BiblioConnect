@@ -5,6 +5,22 @@
 {% block body %}
 
 <section class="mx-auto max-w-7xl mt-32">
+    <div class="inline-flex rounded-md shadow-xs mb-8">
+        <a href="{{ path('app_gestion_catalogue_admin') }}" aria-current="page" class="px-4 py-2 text-sm font-medium text-blue-700 bg-white border border-gray-200 rounded-s-lg hover:bg-gray-100 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-blue-500 dark:focus:text-white">
+            Gérer le catalogue
+        </a>
+        <a href="{{ path('app_gestion_catalogue_admin_suivit') }}" class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border-t border-b border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-blue-500 dark:focus:text-white">
+            Suivre les réservations
+        </a>
+        {% if is_granted('ROLE_ADMIN') %}
+            <a href="{{ path('app_gestion_catalogue_admin_commentaire') }}" class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border-t border-b border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-blue-500 dark:focus:text-white">
+                Modérer les commentaires
+            </a>
+            <a href="{{ path('admin_users') }}" class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-e-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-blue-500 dark:focus:text-white">
+                profils utilisateurs
+            </a>
+        {% endif %}
+    </div>
     <div class="w-full max-w-full p-6 border border-gray-200 rounded-lg shadow-sm sm:p-8 md:p-10 bg-gray-800 dark:border-gray-700">
         <h1 class="text-2xl font-semibold text-gray-900 dark:text-white mb-8">Modifier l'ouvrage</h1>
 
