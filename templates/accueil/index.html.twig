@@ -3,7 +3,25 @@
 {% block title %}Hello AccueilController!{% endblock %}
 
 {% block body %}
-    <section>
-        
+    <section class="mt-32">
+        <h1>Recherche de livres</h1>
+
+        {{ form_start(form) }}
+            {{ form_row(form.title) }}
+            {{ form_row(form.author) }}
+            {{ form_row(form.category) }}
+            <button type="submit">Rechercher</button>
+        {{ form_end(form) }}
+
+        {% if books is not empty %}
+            <h2>Résultats de la recherche</h2>
+            <ul>
+                {% for book in books %}
+                    <li><a href="{{ path('app_book_view', { 'slug': book.slug }) }}">{{ book.title }} - {{ book.author.name }} - {{ book.category.name }}</a></li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Aucun résultat trouvé.</p>
+        {% endif %}
     </section>
 {% endblock %}

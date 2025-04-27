@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouveau book{% endblock %}
+
+{% block body %}
+
+<section class="mt-32">
+    <div>
+        <h1>Créer un nouveau book</h1>
+
+        {{ form_start(form) }}
+
+        {{ form_widget(form) }}
+        <button class="btn btn-primary">Enregistré</button>
+        {{ form_end(form) }}
+    </div>
+</section>
+
+{% endblock %}

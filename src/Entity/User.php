@@ -3,21 +3,15 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
-<<<<<<< HEAD
-=======
+use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
->>>>>>> a7a140a69f090e2fe5e4669523a573fd9a5931c1
-use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-<<<<<<< HEAD
 #[ORM\Table(name: '`user`')]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
-=======
->>>>>>> a7a140a69f090e2fe5e4669523a573fd9a5931c1
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -25,7 +19,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $id = null;
 
-<<<<<<< HEAD
     #[ORM\Column(length: 180)]
     private ?string $email = null;
 
@@ -41,25 +34,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
-=======
-    #[ORM\Column(length: 180, unique: true)]
-    private ?string $email = null;
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Comment::class, orphanRemoval: true)]
+    private Collection $comments;
 
-    #[ORM\Column]
-    private array $roles = [];
-
-    #[ORM\Column]
-    private ?string $password = null;
-
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Reservation::class)]
-    private Collection $reservations;
-
-    public function __construct()
-    {
-        $this->reservations = new ArrayCollection();
-    }
-
->>>>>>> a7a140a69f090e2fe5e4669523a573fd9a5931c1
     public function getId(): ?int
     {
         return $this->id;
@@ -70,7 +47,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->email;
     }
 
-<<<<<<< HEAD
     public function setEmail(string $email): static
     {
         $this->email = $email;
@@ -116,40 +92,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @see PasswordAuthenticatedUserInterface
      */
     public function getPassword(): ?string
-=======
-    public function setEmail(string $email): self
-    {
-        $this->email = $email;
-        return $this;
-    }
-
-    public function getUserIdentifier(): string
-    {
-        return $this->email;
-    }
-
-    public function getRoles(): array
-    {
-        $roles = $this->roles;
-        if (!in_array('ROLE_USER', $roles)) {
-            $roles[] = 'ROLE_USER';
-        }
-        return array_unique($roles);
-    }
-
-    public function setRoles(array $roles): self
-    {
-        $this->roles = $roles;
-        return $this;
-    }
-
-    public function getPassword(): string
->>>>>>> a7a140a69f090e2fe5e4669523a573fd9a5931c1
     {
         return $this->password;
     }
 
-<<<<<<< HEAD
     public function setPassword(string $password): static
     {
         $this->password = $password;
@@ -164,16 +110,5 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
-=======
-    public function setPassword(string $password): self
-    {
-        $this->password = $password;
-        return $this;
-    }
-
-    public function getReservations(): Collection
-    {
-        return $this->reservations;
->>>>>>> a7a140a69f090e2fe5e4669523a573fd9a5931c1
     }
 }

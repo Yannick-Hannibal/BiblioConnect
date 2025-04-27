@@ -1,3 +1,23 @@
-/* body {
-    background-color: skyblue;
-} */
+.rating-container .star-label {
+    cursor: pointer;
+    font-size: 2rem;
+    color: #ccc; /* gris par défaut */
+    margin-right: 5px;
+}
+
+.rating-container input[type="radio"] {
+    display: none;
+}
+
+.rating-container input[type="radio"]:checked + .star,
+.rating-container input[type="radio"]:hover + .star {
+    color: gold;
+}
+
+.rating-container .star {
+    font-size: 2rem;
+    color: #ccc; /* gris par défaut */
+    cursor: pointer;
+    transition: color 0.2s;
+    margin-right: 5px;
+}

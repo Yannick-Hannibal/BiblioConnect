@@ -4,19 +4,37 @@
 
 {% block body %}
 
-<scetion>
+<section class="mt-32">
     <div>
         <div>
             <div>Profil</div>
-            <div></div>
+            <div>User Email : {{ email }}</div>
         </div>
         <div>
             <div>Action</div>
-            <div></div>
+            <div>
+                <a href="" >Rechercher votre plaisir<a/>
+                <a href="" >Voir tout les ouvrages<a/>
+            </div>
         </div>
         <div>
-            <div></div>
-            <div></div>
+            <div>Vos résevation</div>
+            <div>
+                {% if reservations is not empty %}
+                    <ul>
+                        {% for reservation in reservations %}
+                            <li>
+                                <strong>Livre :</strong> {{ reservation.book.title }}<br>
+                                <strong>Auteur :</strong> {{ reservation.book.author.name }}<br> <!-- Afficher le nom de l'auteur -->
+                                <strong>Date de réservation :</strong> {{ reservation.reservedAt|date('d/m/Y H:i') }}<br>
+                                <strong>Statut :</strong> {{ reservation.status }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>Aucune réservation trouvée.</p>
+                {% endif %}
+            </div>
         </div>
     </div>
 </section>

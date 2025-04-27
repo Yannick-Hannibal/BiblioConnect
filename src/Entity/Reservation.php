@@ -6,11 +6,14 @@ use App\Repository\ReservationRepository;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\User;
 use App\Entity\Book;
-use DateTimeInterface;
 
 #[ORM\Entity(repositoryClass: ReservationRepository::class)]
 class Reservation
 {
+    public const STATUS_EN_ATTENTE = 'en_attente';
+    public const STATUS_CONFIRMEE = 'confirmee';
+    public const STATUS_ANNULEE = 'annulee';
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -20,7 +23,7 @@ class Reservation
     private ?\DateTimeInterface $reservedAt = null;
 
     #[ORM\Column(length: 20)]
-    private ?string $status = null;
+    private ?string $status = self::STATUS_EN_ATTENTE; // statut par défaut
 
     #[ORM\ManyToOne(inversedBy: 'reservations')]
     #[ORM\JoinColumn(nullable: false)]
@@ -29,6 +32,9 @@ class Reservation
     #[ORM\ManyToOne(inversedBy: 'reservations')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Book $book = null;
+
+    #[ORM\Column(type: 'integer')]
+    private ?int $quantity = 1; // Quantité réservée, 1 par défaut
 
     public function getId(): ?int
     {
@@ -77,5 +83,28 @@ class Reservation
     {
         $this->book = $book;
         return $this;
+    }
+
+    public function getQuantity(): ?int
+    {
+        return $this->quantity;
+    }
+
+    public function setQuantity(int $quantity): self
+    {
+        $this->quantity = $quantity;
+        return $this;
+    }
+
+    // Méthode pour vérifier si la quantité demandée est disponible dans le stock
+    public function isStockAvailable(): bool
+    {
+        return $this->book->getStock() >= $this->quantity;
+    }
+
+    // Méthode pour mettre à jour le stock après réservation
+    public function updateStock(): void
+    {
+        $this->book->setStock($this->book->getStock() - $this->quantity);
     }
 }
