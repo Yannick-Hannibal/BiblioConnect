@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Book;
 use App\Form\BookSearchType;
+use App\Repository\BookRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -13,42 +14,25 @@ use Doctrine\ORM\EntityManagerInterface;
 final class AccueilController extends AbstractController
 {
     #[Route('/', name: 'app_accueil')]
-    public function index(Request $request, EntityManagerInterface $em): Response
+    public function index(Request $request, BookRepository $bookRepository): Response
     {
-        // Créer le formulaire de recherche
-        $form = $this->createForm(BookSearchType::class);
-        $form->handleRequest($request);
+        $books = $bookRepository->findBookLast();
+        $category = "";
+        $author = "";
+        $langue = "";
 
-        // Récupérer les données du formulaire
-        $title = $form->get('title')->getData();
-        $author = $form->get('author')->getData();
-        $category = $form->get('category')->getData();
-
-        // Construction de la requête
-        $queryBuilder = $em->getRepository(Book::class)->createQueryBuilder('b');
-
-        if ($title) {
-            $queryBuilder->andWhere('b.title LIKE :title')
-                ->setParameter('title', '%' . $title . '%');
+        foreach ($books as $book) {
+            $category = $book->getCategory();
+            $author = $book->getAuthor();
+            $langue = $book->getLanguage();
         }
-
-        if ($author) {
-            $queryBuilder->andWhere('b.author = :author')
-                ->setParameter('author', $author);
-        }
-
-        if ($category) {
-            $queryBuilder->andWhere('b.category = :category')
-                ->setParameter('category', $category);
-        }
-
-        // Exécuter la requête
-        $books = $queryBuilder->getQuery()->getResult();
 
         return $this->render('accueil/index.html.twig', [
             'controller_name' => 'AccueilController',
-            'form' => $form->createView(),
             'books' => $books,
+            'category' => $category,
+            'author' => $author,
+            'langue' => $langue,
         ]);
     }
 }

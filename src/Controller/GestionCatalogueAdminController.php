@@ -20,16 +20,18 @@ use App\Form\UserType;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 
 #[Route('/Admin')]
-// #[IsGranted('ROLE_ADMIN')]
 final class GestionCatalogueAdminController extends AbstractController
 {
     #[Route('/gestion/', name: 'app_gestion_catalogue_admin')]
     public function index(Request $request, EntityManagerInterface $em): Response
     {
+        if (!$this->isGranted('ROLE_ADMIN') && !$this->isGranted('ROLE_LIBRARIAN')) {
+            throw $this->createAccessDeniedException('Accès refusé');
+        }
         $existinglistBook = $em->getRepository(Book::class)->findAll();
 
         // Passer les réservations à la vue
@@ -47,6 +49,10 @@ final class GestionCatalogueAdminController extends AbstractController
     #[Route('/detail/{slug}', name: 'app_gestion_catalogue_admin_detail')]
     public function view(BookRepository $bookRepository, string $slug, EntityManagerInterface $entityManager, Request $request): Response
     {
+        if (!$this->isGranted('ROLE_ADMIN') && !$this->isGranted('ROLE_LIBRARIAN')) {
+            throw $this->createAccessDeniedException('Accès refusé');
+        }
+
         $book = $bookRepository->findOneBy(['slug' => $slug]);
 
         if (!$book) {
@@ -69,6 +75,9 @@ final class GestionCatalogueAdminController extends AbstractController
     #[Route('/new/', name: 'app_gestion_catalogue_admin_new')]
     public function new(EntityManagerInterface $entityManager, Request $request): Response
     {
+        if (!$this->isGranted('ROLE_ADMIN') && !$this->isGranted('ROLE_LIBRARIAN')) {
+            throw $this->createAccessDeniedException('Accès refusé');
+        }
 
         $book = new Book();
         $form = $this->createForm(BookType::class, $book);
@@ -93,6 +102,10 @@ final class GestionCatalogueAdminController extends AbstractController
     #[Route('/edit/{slug}', name: 'app_gestion_catalogue_admin_edit')]
     public function edit(BookRepository $bookRepository, string $slug, EntityManagerInterface $entityManager, Request $request): Response
     {
+        if (!$this->isGranted('ROLE_ADMIN') && !$this->isGranted('ROLE_LIBRARIAN')) {
+            throw $this->createAccessDeniedException('Accès refusé');
+        }
+
         $book = $bookRepository->findOneBy(['slug' => $slug]);
 
         if (!$book) {
@@ -120,6 +133,10 @@ final class GestionCatalogueAdminController extends AbstractController
     #[Route('/delete/{id}', name: 'app_gestion_catalogue_admin_delete')]
     public function delete(Book $book, Request $request, EntityManagerInterface $entityManager): Response
     {
+        if (!$this->isGranted('ROLE_ADMIN') && !$this->isGranted('ROLE_LIBRARIAN')) {
+            throw $this->createAccessDeniedException('Accès refusé');
+        }
+
         if ($this->isCsrfTokenValid('delete' . $book->getId(), $request->request->get('_token'))) {
             $entityManager->remove($book);
             $entityManager->flush();
@@ -130,6 +147,10 @@ final class GestionCatalogueAdminController extends AbstractController
     #[Route('/suivit/', name: 'app_gestion_catalogue_admin_suivit')]
     public function suivit(Request $request, EntityManagerInterface $em): Response
     {
+        if (!$this->isGranted('ROLE_ADMIN') && !$this->isGranted('ROLE_LIBRARIAN')) {
+            throw $this->createAccessDeniedException('Accès refusé');
+        }
+
         $existinglistreservation = $em->getRepository(Reservation::class)->findAll();
 
         // Passer les réservations à la vue
@@ -147,6 +168,10 @@ final class GestionCatalogueAdminController extends AbstractController
     #[Route('/editreservation/{slug}', name: 'app_gestion_catalogue_admin_editreservation')]
     public function editreservation(ReservationRepository $reservationRepository, BookRepository $bookRepository, string $slug, EntityManagerInterface $entityManager, Request $request, EntityManagerInterface $em): Response
     {
+        if (!$this->isGranted('ROLE_ADMIN') && !$this->isGranted('ROLE_LIBRARIAN')) {
+            throw $this->createAccessDeniedException('Accès refusé');
+        }
+
         $book = $bookRepository->findOneBy(['slug' => $slug]);
 
         if (!$book) {
@@ -181,6 +206,7 @@ final class GestionCatalogueAdminController extends AbstractController
     }
 
     #[Route('/deletereservation/{id}', name: 'app_gestion_catalogue_admin_deletereservation')]
+    #[IsGranted('ROLE_ADMIN')]
     public function deletereservation(Reservation $reservation, BookRepository $bookRepository, EntityManagerInterface $entityManager, Request $request, EntityManagerInterface $em): Response
     {
         if ($this->isCsrfTokenValid('delete' . $reservation->getId(), $request->request->get('_token'))) {
@@ -191,6 +217,7 @@ final class GestionCatalogueAdminController extends AbstractController
     }
 
     #[Route('/commentaires/', name: 'app_gestion_catalogue_admin_commentaire')]
+    #[IsGranted('ROLE_ADMIN')]
     public function commentaires(Request $request, EntityManagerInterface $em): Response
     {
         $existinglistBook = $em->getRepository(Comment::class)->findBy([
@@ -210,6 +237,7 @@ final class GestionCatalogueAdminController extends AbstractController
     }
 
     #[Route('/commentaires/approve/{id}', name: 'admin_comment_approve')]
+    #[IsGranted('ROLE_ADMIN')]
     public function approve(Comment $comment, EntityManagerInterface $entityManager): Response
     {
         $comment->setStatus('approved');
@@ -228,6 +256,7 @@ final class GestionCatalogueAdminController extends AbstractController
     }
 
     #[Route('/users', name: 'admin_users')]
+    #[IsGranted('ROLE_ADMIN')]
     public function users(EntityManagerInterface $em)
     {
         // Vérifier si l'utilisateur a le rôle ADMIN
@@ -243,44 +272,99 @@ final class GestionCatalogueAdminController extends AbstractController
     }
 
     #[Route('/admin/user/{id}/edit', name: 'admin_user_edit')]
-    public function editUser(Request $request, User $user, EntityManagerInterface $em, UserPasswordEncoderInterface $passwordEncoder, int $id)
-    {
+    #[IsGranted('ROLE_ADMIN')]
+    public function editUser(
+        Request $request,
+        User $user,
+        EntityManagerInterface $entityManager,
+        UserPasswordHasherInterface $passwordHasher
+    ) {
         // if (!$this->isGranted('ROLE_ADMIN')) {
         //     throw $this->createAccessDeniedException('Accès refusé');
         // }
 
         // Récupération de l'utilisateur
-        $user = $this->getDoctrine()->getRepository(User::class)->find($id);
-
-        // Création du formulaire
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $plainPassword = $form->get('plainPassword')->getData();
+        if ($form->isSubmitted()) {
+            $data = $form->getData();
 
-            // Si un mot de passe a été fourni, on le hache et on l'attribue à l'utilisateur
-            if ($plainPassword) {
-                $user->setPassword($passwordEncoder->encodePassword($user, $plainPassword));
+            if ($form->get('email')->isSubmitted() && $form->get('email')->isValid()) {
+                $user->setEmail($data->getEmail());
             }
 
-            // Mise à jour des rôles
+            $plainPassword = $form->get('plainPassword')->getData();
+            if (!empty($plainPassword)) {
+                $user->setPassword($passwordHasher->hashPassword($user, $plainPassword));
+            }
+
             $user->setRoles($form->get('roles')->getData());
 
-            // Sauvegarde des changements dans la base de données
-            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->flush();
 
-            // Message flash pour indiquer la réussite de l'opération
             $this->addFlash('success', 'Utilisateur modifié avec succès.');
 
-            // Redirection ou retour à une page de confirmation
-            return $this->redirectToRoute('admin_user_list');
+            return $this->redirectToRoute('admin_user_edit');
         }
-
 
         return $this->render('gestion_catalogue_admin/users/edit.html.twig', [
             'form' => $form->createView(),
         ]);
+    }
+
+    #[Route('/admin/user/new', name: 'admin_user_new')]
+    #[IsGranted('ROLE_ADMIN')]
+    public function newUser(
+        Request $request,
+        UserPasswordHasherInterface $passwordHasher,
+        EntityManagerInterface $entityManager
+    ) {
+        // if (!$this->isGranted('ROLE_ADMIN')) {
+        //     throw $this->createAccessDeniedException('Accès refusé');
+        // }
+
+        // Récupération de l'utilisateur
+        $user = new User();
+        $form = $this->createForm(UserType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $plaintextPassword = $form->get('plainPassword')->getData();
+            if (!empty($plaintextPassword)) {
+                $hashedPassword = $passwordHasher->hashPassword($user, $plaintextPassword);
+                $user->setPassword($hashedPassword);
+            }
+
+
+            // Gestion des rôles : si aucun rôle sélectionné, on met ROLE_USER
+            if (empty($user->getRoles())) {
+                $user->setRoles(['ROLE_USER']);
+            }
+
+            $entityManager->persist($user);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Compte créé avec succès !');
+            return $this->redirectToRoute('admin_users');
+        }
+
+        return $this->render('gestion_catalogue_admin/users/new.html.twig', [
+            'form' => $form->createView(),
+        ]);
+
+    }
+
+    #[Route('/dashboard', name: 'app_dashboard')]
+    public function dashboard()
+    {
+        if (!$this->isGranted('ROLE_ADMIN') && !$this->isGranted('ROLE_LIBRARIAN')) {
+            throw $this->createAccessDeniedException('Accès refusé');
+        }
+
+        // Récupération de l'utilisateur
+
+        return $this->render('gestion_catalogue_admin/dashboard.html.twig');
+
     }
 }

@@ -21,3 +21,23 @@
     transition: color 0.2s;
     margin-right: 5px;
 }
+
+.bg-coverHome {
+    position: relative; /* Nécessaire pour positionner l'élément pseudo */
+    background-image: url('/images/open-book-concept-fairy-tale-fiction-storytelling.jpg');
+    height: 91vh;
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background-position: 0rem;
+}
+
+.bg-coverHome::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgb(0 0 0 / 67%); 
+    z-index: 1; 
+}

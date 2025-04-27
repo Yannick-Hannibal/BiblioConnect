@@ -16,6 +16,14 @@ class BookRepository extends ServiceEntityRepository
         parent::__construct($registry, Book::class);
     }
 
+    public function findBookLast () {
+        return $this->createQueryBuilder('b')
+        ->orderBy('b.id', 'DESC')
+        ->setMaxResults((6))
+        ->getQuery()
+        ->getResult();
+    }
+
     //    /**
     //     * @return Book[] Returns an array of Book objects
     //     */

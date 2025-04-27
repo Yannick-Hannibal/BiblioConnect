@@ -4,15 +4,16 @@
 
 {% block body %}
 
-<section class="mt-32">
+<section class="mx-auto max-w-7xl mt-32 mb-10">
 
-    <a href="{{ path('app_gestion_catalogue_admin_new') }}" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Créer un ouvrage</a>
+    <div class="flex justify-end mb-10">
+        <a href="{{ path('app_gestion_catalogue_admin_new') }}" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Créer un ouvrage</a>
+    </div>
 
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-            <caption class="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800">
-                Our products
-                <p class="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">Browse a list of Flowbite products designed to help you work and play, stay organized, get answers, keep in touch, grow your business, and more.</p>
+            <caption class="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 dark:text-white bg-gray-800">
+                Liste des ouvrages
             </caption>
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
@@ -55,7 +56,9 @@
                         </tr>
                     {% endfor %}
                 {% else %}
-                    <p>Aucune réservation trouvée.</p>
+                        <tr>
+                            <td colspan="3">Aucune ouvrage trouvée</td>
+                        </tr>
                 {% endif %}
             </tbody>
         </table>
