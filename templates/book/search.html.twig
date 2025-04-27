@@ -1,68 +1,71 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Recherche{% endblock %}
+{% block title %}Recherche d'Ouvrage{% endblock %}
 
 {% block body %}
-    <section class="mx-auto max-w-7xl mt-32">
-        <h1 class="text-center text-4xl font-bold mb-2">Recherche d'ouvrage</h1>
+<section class="mx-auto max-w-7xl mt-32 px-4">
+    <h1 class="text-center text-4xl font-bold mb-10 text-gray-900 dark:text-white">Recherche d'Ouvrage</h1>
 
-        {{ form_start(form, {'attr': {'class': 'flex flex-row space-x-2 items-center max-w-3xl mx-auto p-6 bg-white shadow-lg rounded-lg'}}) }}
-            <div class="">
-                {{ form_label(form.title, null, {'attr': {'class': 'block text-gray-700 font-medium'}}) }}
-                {{ form_widget(form.title, {'attr': {'class': 'mt-1 block w-full px-4 py-2 border rounded-md focus:ring-blue-500 focus:border-blue-500'}}) }}
-                {{ form_errors(form.title) }}
-            </div>
-
-            <div class="">
-                {{ form_label(form.author, null, {'attr': {'class': 'block text-gray-700 font-medium'}}) }}
-                {{ form_widget(form.author, {'attr': {'class': 'mt-1 block w-full px-4 py-2 border rounded-md focus:ring-blue-500 focus:border-blue-500'}}) }}
-                {{ form_errors(form.author) }}
-            </div>
-
-            <div class="">
-                {{ form_label(form.category, null, {'attr': {'class': 'block text-gray-700 font-medium'}}) }}
-                {{ form_widget(form.category, {'attr': {'class': 'mt-1 block w-full px-4 py-2 border rounded-md focus:ring-blue-500 focus:border-blue-500'}}) }}
-                {{ form_errors(form.category) }}
-            </div>
-
-            <div class="mt-7">
-                <button type="submit" class="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    Rechercher
-                </button>
-            </div>
-        {{ form_end(form) }}
-
-        <div class="mt-12">
-            {% if books is not empty %}
-                <h2 class="text-base">Résultats de la recherche : </h2>
-                <div class="grid grid-cols-3 gap-2 mt-5">
-                    {% for book in books %}
-                        <div class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-7 h-7 text-gray-500 dark:text-gray-400 mb-3">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
-                            </svg>
-
-                            <a href="{{ path('app_book_view', { 'slug': book.slug }) }}">
-                                <h5 class="mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">{{ book.title }}</h5>
-                            </a>
-                            <p class="mb-3 font-normal text-gray-500 dark:text-gray-400">{{ book.description | slice(0, 18) }}</p>
-                            <div class="grid grid-cols-3 gap-2 py-2">
-                                <span class="bg-blue-100 text-blue-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-blue-900 dark:text-blue-300">{{ book.author.name }}</span>
-                                <span class="bg-blue-100 text-blue-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-blue-900 dark:text-blue-300">{{ book.category.name }}</span>
-                                <span class="bg-blue-100 text-blue-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-blue-900 dark:text-blue-300">{{ book.language.name }}</span>
-                            </div>
-                            <a href="{{ path('app_book_view', { 'slug': book.slug }) }}" class="inline-flex font-medium items-center text-blue-600 hover:underline">
-                                Voir plus
-                                <svg class="w-3 h-3 ms-2.5 rtl:rotate-[270deg]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11v4.833A1.166 1.166 0 0 1 13.833 17H2.167A1.167 1.167 0 0 1 1 15.833V4.167A1.166 1.166 0 0 1 2.167 3h4.618m4.447-2H17v5.768M9.111 8.889l7.778-7.778"/>
-                                </svg>
-                            </a>
-                        </div>
-                    {% endfor %}
-                </div>
-            {% else %}
-                <p>Aucun résultat trouvé.</p>
-            {% endif %}
+    {{ form_start(form, {'attr': {'class': 'flex flex-col md:flex-row gap-6 items-center justify-center max-w-5xl mx-auto p-8 bg-white dark:bg-gray-800 shadow-lg rounded-2xl'}}) }}
+        <div class="w-full">
+            {{ form_label(form.title, null, {'attr': {'class': 'block text-gray-700 dark:text-gray-300 font-semibold'}}) }}
+            {{ form_widget(form.title, {'attr': {'class': 'mt-1 block w-full px-4 py-2 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500'}}) }}
+            {{ form_errors(form.title) }}
         </div>
-    </section>
+
+        <div class="w-full">
+            {{ form_label(form.author, null, {'attr': {'class': 'block text-gray-700 dark:text-gray-300 font-semibold'}}) }}
+            {{ form_widget(form.author, {'attr': {'class': 'mt-1 block w-full px-4 py-2 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500'}}) }}
+            {{ form_errors(form.author) }}
+        </div>
+
+        <div class="w-full">
+            {{ form_label(form.category, null, {'attr': {'class': 'block text-gray-700 dark:text-gray-300 font-semibold'}}) }}
+            {{ form_widget(form.category, {'attr': {'class': 'mt-1 block w-full px-4 py-2 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500'}}) }}
+            {{ form_errors(form.category) }}
+        </div>
+
+        <div class="w-full md:w-auto mt-4 md:mt-7">
+            <button type="submit" class="w-full md:w-auto bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm font-semibold transition">
+                Rechercher
+            </button>
+        </div>
+    {{ form_end(form) }}
+
+    <div class="mt-16">
+        {% if books is not empty %}
+            <h2 class="text-2xl font-semibold text-center text-gray-900 dark:text-white mb-10">Résultats de la recherche</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                {% for book in books %}
+                    <div class="p-6 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-md transition hover:shadow-lg">
+                        <div class="flex justify-center mb-4">
+                            <svg class="w-10 h-10 text-indigo-500 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+                            </svg>
+                        </div>
+                        <a href="{{ path('app_book_view', { 'slug': book.slug }) }}">
+                            <h5 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white mb-2">{{ book.title }}</h5>
+                        </a>
+                        <p class="text-gray-500 dark:text-gray-400 mb-4">
+                            {{ book.description|slice(0, 100) ~ '...' }}
+                        </p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-indigo-100 text-indigo-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-indigo-900 dark:text-indigo-300">{{ book.author.name }}</span>
+                            <span class="bg-indigo-100 text-indigo-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-indigo-900 dark:text-indigo-300">{{ book.category.name }}</span>
+                            <span class="bg-indigo-100 text-indigo-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-indigo-900 dark:text-indigo-300">{{ book.language.name }}</span>
+                        </div>
+                        <a href="{{ path('app_book_view', { 'slug': book.slug }) }}" class="inline-flex items-center text-indigo-600 dark:text-indigo-400 font-medium hover:underline">
+                            Voir plus
+                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                            </svg>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-center text-gray-500 dark:text-gray-400 text-lg mt-8">Aucun résultat trouvé.</p>
+        {% endif %}
+    </div>
+</section>
 {% endblock %}
