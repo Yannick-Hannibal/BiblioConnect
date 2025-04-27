@@ -3,39 +3,43 @@
 {% block title %}Inscription{% endblock %}
 
 {% block body %}
-    <section class="mt-28">
-        <div class="flex justify-center mx-auto max-w-7xl">
-            <div class="w-full max-w-sm p-4 border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-8 bg-gray-800 dark:border-gray-700">
-                {{ form_start(form, { attr: { class: 'space-y-6' } }) }}
-                    <h5 class="text-xl font-medium text-gray-900 dark:text-white">Créer un compte</h5>
-
-                    <div>
-                        {{ form_label(form.email, null, { label_attr: { class: 'block mb-2 text-sm font-medium text-gray-900 dark:text-white' } }) }}
-                        {{ form_errors(form.email) }}
-                        {{ form_widget(form.email, { attr: { class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:text-white' } }) }}
-                    </div>
-
-                   <div>
-                        {{ form_label(form.plainPassword.first, null, { 'label_attr': { 'class': 'block mb-2 text-sm font-medium text-gray-900 dark:text-white' } }) }}
-                        {{ form_errors(form.plainPassword.first) }}
-                        {{ form_widget(form.plainPassword.first, { 'attr': { 'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:text-white' } }) }}
-                    </div>
-
-                    <div>
-                        {{ form_label(form.plainPassword.second, null, { 'label_attr': { 'class': 'block mb-2 text-sm font-medium text-gray-900 dark:text-white' } }) }}
-                        {{ form_errors(form.plainPassword.second) }}
-                        {{ form_widget(form.plainPassword.second, { 'attr': { 'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:text-white' } }) }}
-                    </div>
-
-                    <button type="submit" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                        S'inscrire
-                    </button>
-
-                    <div class="text-sm font-medium text-gray-500 dark:text-gray-300">
-                        Déjà inscrit ? <a href="{{ path('app_login') }}" class="text-blue-700 hover:underline dark:text-blue-500">Connectez-vous</a>
-                    </div>
-                {{ form_end(form) }}
+<section class="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-200 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="w-full max-w-md space-y-8 bg-white p-8 rounded-2xl shadow-lg">
+        {{ form_start(form, { attr: { class: 'space-y-6' } }) }}
+            <div>
+                <h2 class="text-center text-3xl font-extrabold text-gray-900">Créer un compte</h2>
+                <p class="mt-2 text-center text-sm text-gray-600">
+                    Déjà inscrit ?
+                    <a href="{{ path('app_login') }}" class="font-medium text-indigo-600 hover:text-indigo-500">
+                        Connectez-vous
+                    </a>
+                </p>
             </div>
-        </div>
-    </section>
+
+            <div>
+                {{ form_label(form.email, null, { label_attr: { class: 'block text-sm font-medium text-gray-700' } }) }}
+                {{ form_errors(form.email) }}
+                {{ form_widget(form.email, { attr: { class: 'appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm' } }) }}
+            </div>
+
+            <div>
+                {{ form_label(form.plainPassword.first, null, { label_attr: { class: 'block text-sm font-medium text-gray-700' } }) }}
+                {{ form_errors(form.plainPassword.first) }}
+                {{ form_widget(form.plainPassword.first, { attr: { class: 'appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm' } }) }}
+            </div>
+
+            <div>
+                {{ form_label(form.plainPassword.second, null, { label_attr: { class: 'block text-sm font-medium text-gray-700' } }) }}
+                {{ form_errors(form.plainPassword.second) }}
+                {{ form_widget(form.plainPassword.second, { attr: { class: 'appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm' } }) }}
+            </div>
+
+            <div>
+                <button type="submit" class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    S'inscrire
+                </button>
+            </div>
+        {{ form_end(form) }}
+    </div>
+</section>
 {% endblock %}

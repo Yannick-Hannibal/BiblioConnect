@@ -256,7 +256,7 @@ final class GestionCatalogueAdminController extends AbstractController
     }
 
     #[Route('/users', name: 'admin_users')]
-    #[IsGranted('ROLE_ADMIN')]
+    // #[IsGranted('ROLE_ADMIN')]
     public function users(EntityManagerInterface $em)
     {
         // Vérifier si l'utilisateur a le rôle ADMIN
@@ -272,7 +272,7 @@ final class GestionCatalogueAdminController extends AbstractController
     }
 
     #[Route('/admin/user/{id}/edit', name: 'admin_user_edit')]
-    #[IsGranted('ROLE_ADMIN')]
+    // #[IsGranted('ROLE_ADMIN')]
     public function editUser(
         Request $request,
         User $user,
@@ -314,7 +314,7 @@ final class GestionCatalogueAdminController extends AbstractController
     }
 
     #[Route('/admin/user/new', name: 'admin_user_new')]
-    #[IsGranted('ROLE_ADMIN')]
+    // #[IsGranted('ROLE_ADMIN')]
     public function newUser(
         Request $request,
         UserPasswordHasherInterface $passwordHasher,
