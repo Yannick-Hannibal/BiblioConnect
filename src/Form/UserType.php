@@ -22,23 +22,19 @@ class UserType extends AbstractType
             ])
             ->add('plainPassword', PasswordType::class, [
                 'label' => 'Mot de passe',
-                'mapped' => false, // Ce champ n'est pas mappé à l'entité User
-                'constraints' => [
-                    new NotBlank(),
-                ],
+                'mapped' => false,
                 'required' => false,
             ])
             ->add('roles', ChoiceType::class, [
                 'label' => 'Rôles',
                 'choices' => [
                     'Utilisateur' => 'ROLE_USER',
+                    'Bibliothécaires' => 'ROLE_LIBRARIAN',
                     'Administrateur' => 'ROLE_ADMIN',
                 ],
                 'multiple' => true, // Permet de sélectionner plusieurs rôles
                 'expanded' => true, // Affiche les rôles sous forme de cases à cocher
-            ])
-            ->add('save', SubmitType::class, [
-                'label' => 'Enregistrer'
+                'required' => false,
             ])
         ;
     }

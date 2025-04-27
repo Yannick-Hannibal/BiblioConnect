@@ -19,6 +19,7 @@ class ReservationType extends AbstractType
             ->add('reservedAt', null, [
                 'widget' => 'single_text',
                 'disabled' => true,
+                'attr' => ['class' => 'bg-gray-50 mb-4 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white']
             ])
             ->add('status', ChoiceType::class, [
                 'choices'  => [
@@ -26,9 +27,11 @@ class ReservationType extends AbstractType
                     'Confirmée' => Reservation::STATUS_CONFIRMEE,
                     'Annulée' => Reservation::STATUS_ANNULEE,
                 ],
+                'attr' => ['class' => 'bg-gray-50 mb-4 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white']
             ])
             ->add('quantity', null, [
                 'disabled' => true,
+                'attr' => ['class' => 'bg-gray-50 mb-4 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white']
             ])
             // ->add('user', EntityType::class, [
             //     'class' => User::class,
